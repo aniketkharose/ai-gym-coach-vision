@@ -17,7 +17,8 @@ def render_login_wall():
             "START SESSION",
             width="stretch"
         )
-
+        
+        
     if submit_button:
         if not username:
             st.error("Name cannot be empty. Please enter a valid name.")
