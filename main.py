@@ -9,6 +9,7 @@ from services.config.workout_config import EXERCISE_OPTIONS
 from services.ui.style_loader import load_css, inject_local_font, inject_webrtc_styles
 from services.persistence.exercise_repository import init_db
 from streamlit_webrtc import webrtc_streamer, WebRtcMode
+from twilio.rest import Client
 from services.vision.exercise_video_processor import VideoProcessorClass
 from services.tracking.metrics import sync_metrics_update
 from services.persistence.exercise_repository import get_users_exercises
@@ -17,6 +18,31 @@ from services.coaching.llm import LLMCoach
 from services.coaching.tts import TextToSpeech
 from services.coaching.voice_pipeline import VoicePipeline, autoplay_audio
 
+@st.cache_data(ttl=300)
+def get_ice_servers():
+    # First try Streamlit Cloud Secrets
+    try:
+        account_sid = st.secrets["TWILIO_ACCOUNT_SID"]
+        auth_token = st.secrets["TWILIO_AUTH_TOKEN"]
+    except Exception:
+        # Fallback for local .env
+        account_sid = os.getenv("TWILIO_ACCOUNT_SID")
+        auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+
+    if not account_sid or not auth_token:
+        st.error("Twilio credentials are missing.")
+        return []
+
+    try:
+        client = Client(account_sid, auth_token)
+
+        token = client.tokens.create()
+
+        return token.ice_servers
+
+    except Exception as e:
+        st.error(f"Twilio ICE server error: {e}")
+        return []
 
 def main():
     st.set_page_config(
@@ -207,19 +233,13 @@ def main():
             unsafe_allow_html=True,
         )
     else:
+        ice_servers = get_ice_servers()
         context = webrtc_streamer(
             key="exercise-analysis",
             mode=WebRtcMode.SENDRECV,
             video_processor_factory=VideoProcessorClass,
             rtc_configuration={
-                "iceServers": [
-                    {
-                        "urls": [
-                            "stun:stun.l.google.com:19302",
-                            "stun:stun1.l.google.com:19302"
-                        ]
-                    }
-                ]
+                "iceServers": ice_servers
             },
             media_stream_constraints={
                 "video": True,
