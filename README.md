@@ -12,10 +12,5 @@ A small AI-powered fitness assistant that helps users with workout guidance.
 - FastAPI
 - AI/ML
 
-## Run
-```bash
-python main.py
-```
-
 ## Author
 Aniket Kharose
