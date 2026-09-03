@@ -243,25 +243,43 @@ https://ai-gym-coach-vision.streamlit.app/
 
 ## 📸 Screenshots
 
-Add screenshots of the following sections to this README:
+### 🔐 Login / Start Session
 
-### 🏠 Workout Setup
+Users can enter a unique username to start their AI Gym Coach session.
 
-Show the exercise selection, sets, repetitions, and Start Workout
-interface.
+<p align="center">
+  <img src="screenshots/01-login.png" width="850">
+</p>
 
-### 🎥 Real-time AI Coaching
+---
 
-Show the webcam feed with pose landmarks and the AI coaching message.
+### 🏋️ Workout Setup
+
+Select the exercise, number of sets, and repetitions per set before starting the workout.
+
+<p align="center">
+  <img src="screenshots/02-workout-setup.png" width="850">
+</p>
+
+---
 
 ### 📊 Progress & Exercise Metrics
 
-Show total repetitions, current set repetitions, completed sets, and
-exercise-specific metrics.
+The application displays real-time workout progress along with exercise-specific metrics such as knee angle, back angle, depth status, elbow angle, and other form indicators.
 
-### 📜 Workout History
+<p align="center">
+  <img src="screenshots/03-squat-metrics.png" width="850">
+</p>
 
-Show the saved workout history table.
+---
+
+### 🤖 Real-time AI Coaching
+
+The AI Gym Coach uses the webcam for real-time pose detection and provides exercise feedback while tracking repetitions and workout progress.
+
+<p align="center">
+  <img src="screenshots/04-realtime-coaching.png" width="850">
+</p>
 
 ## 🎯 Workout Tracking
 
