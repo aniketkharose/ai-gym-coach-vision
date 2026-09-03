@@ -28,33 +28,25 @@ class SquatDetector(BaseExercise):
 
     def process(self, landmarks):
 
-        # --------------------------------------------------
         # 1. Calculate left knee angle
-        # --------------------------------------------------
         left_knee_angle = self.calculate_angle(
             self.get_point(landmarks, self.LEFT_HIP),
             self.get_point(landmarks, self.LEFT_KNEE),
             self.get_point(landmarks, self.LEFT_ANKLE)
         )
 
-        # --------------------------------------------------
         # 2. Calculate right knee angle
-        # --------------------------------------------------
         right_knee_angle = self.calculate_angle(
             self.get_point(landmarks, self.RIGHT_HIP),
             self.get_point(landmarks, self.RIGHT_KNEE),
             self.get_point(landmarks, self.RIGHT_ANKLE)
         )
 
-        # --------------------------------------------------
         # 3. Check visibility of both knees
-        # --------------------------------------------------
         left_vis = landmarks[self.LEFT_KNEE].visibility
         right_vis = landmarks[self.RIGHT_KNEE].visibility
 
-        # --------------------------------------------------
         # 4. Select the more visible side
-        # --------------------------------------------------
         if left_vis >= right_vis:
             knee_angle = left_knee_angle
 
@@ -71,27 +63,24 @@ class SquatDetector(BaseExercise):
             ankle_idx = self.RIGHT_ANKLE
             shoulder_idx = self.RIGHT_SHOULDER
 
-        # --------------------------------------------------
+        
         # 5. Calculate back / torso angle
-        # --------------------------------------------------
         back_angle = self.calculate_angle(
             self.get_point(landmarks, shoulder_idx),
             self.get_point(landmarks, hip_idx),
             self.get_point(landmarks, knee_idx)
         )
 
-        # --------------------------------------------------
+        
         # 6. Check important landmarks visibility
-        # --------------------------------------------------
         key_landmark_visible = (
             landmarks[hip_idx].visibility >= self.MIN_VISIBILITY
             and landmarks[knee_idx].visibility >= self.MIN_VISIBILITY
             and landmarks[ankle_idx].visibility >= self.MIN_VISIBILITY
         )
 
-        # --------------------------------------------------
+        
         # 7. Detect DOWN → UP movement
-        # --------------------------------------------------
         if key_landmark_visible:
 
             # User went down
@@ -106,9 +95,8 @@ class SquatDetector(BaseExercise):
                 self.stage = "up"
                 self.reps += 1
 
-        # --------------------------------------------------
+        
         # 8. Determine squat depth status
-        # --------------------------------------------------
         if self.stage == "down":
 
             if knee_angle <= self.DOWN_THRESHOLD:
@@ -122,9 +110,8 @@ class SquatDetector(BaseExercise):
         else:
             depth_status = "N/A"
 
-        # --------------------------------------------------
+        
         # 9. Return metrics
-        # --------------------------------------------------
         return {
             "reps": self.reps,
             "knee_angle": int(knee_angle),
