@@ -1,181 +1,263 @@
-/* =========================================================
-   GLOBAL THEME
-========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&display=swap');
 
+/* =========================================================
+   DESIGN TOKENS
+========================================================= */
+:root {
+  --bg: #070A12;
+  --panel: #0F1420;
+  --panel-2: #151B2B;
+  --line: rgba(255, 255, 255, 0.07);
+  --accent: #C6FF3D;
+  --accent-2: #29E6FF;
+  --good: #3DFF9A;
+  --warn: #FF9F43;
+  --bad: #FF5C6C;
+  --muted: rgba(255, 255, 255, 0.55);
+  --radius: 16px;
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 .stApp {
-  background-color: #0A0D14;
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(198, 255, 61, 0.10), transparent 60%),
+    radial-gradient(700px 500px at -10% 10%, rgba(41, 230, 255, 0.08), transparent 60%),
+    var(--bg);
   color: #fff;
 }
 
+header[data-testid="stHeader"] { background: transparent; }
+[data-testid="stToolbar"] { display: none; }   /* remove Share/Deploy bar (optional) */
+
 [data-testid="stSidebar"] {
-  background-color: #111520;
+  background: linear-gradient(180deg, #0F1420 0%, #0A0D16 100%);
+  border-right: 1px solid var(--line);
 }
 
-/* =========================================================
-   TYPOGRAPHY (SCOPED – safer)
-========================================================= */
-
+/* Fonts (icons are excluded so Material icons keep working) */
 .block-container,
-.block-container * {
+.block-container *:not([data-testid="stIconMaterial"]),
+[data-testid="stSidebar"] *:not([data-testid="stIconMaterial"]) {
   font-family: 'AdobeClean', sans-serif !important;
 }
 
-/* =========================================================
-   LAYOUT
-========================================================= */
-
 .block-container {
-  padding: 50px 3rem !important;
-  max-width: 750px !important;
+  padding: 3rem 2rem !important;
+  max-width: 1000px !important;
 }
+
+/* =========================================================
+   HERO
+========================================================= */
+.block-container .hero-title {
+  font-family: 'Barlow Condensed', 'AdobeClean', sans-serif !important;
+  font-style: italic;
+  font-weight: 800;
+  font-size: 3.6rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin: 0.4rem 0 0.3rem;
+  background: linear-gradient(90deg, #fff 0%, var(--accent) 60%, var(--accent-2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-sub { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.4rem; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 12px; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  border: 1px solid var(--line); background: var(--panel); color: var(--muted);
+}
+.pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.pill.live { color: var(--accent); border-color: rgba(198, 255, 61, 0.35); }
+.pill.live .dot { background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulse 1.4s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
+
+/* =========================================================
+   SIDEBAR BRAND + PLAN
+========================================================= */
+.brand { display: flex; align-items: center; gap: 12px; margin: 0.2rem 0 1rem; }
+.brand-logo {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.4rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 22px rgba(198, 255, 61, 0.35);
+}
+.brand-name { font-family: 'Barlow Condensed', sans-serif !important; font-weight: 800; font-size: 1.35rem; letter-spacing: 0.06em; line-height: 1.1; }
+.brand-user { font-size: 0.78rem; color: var(--muted); }
+
+.section-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent); margin: 1.2rem 0 0.6rem;
+}
+
+.plan-chip {
+  background: linear-gradient(135deg, rgba(198,255,61,.14), rgba(41,230,255,.08));
+  border: 1px solid rgba(198, 255, 61, 0.3); border-radius: 12px; padding: 0.7rem 0.9rem; margin-bottom: 0.6rem;
+}
+.plan-chip b { display: block; font-size: 1.05rem; }
+.plan-chip span { color: var(--muted); font-size: 0.82rem; }
+
+/* =========================================================
+   STAT CARDS + RINGS
+========================================================= */
+.stat {
+  background: var(--panel); border: 1px solid var(--line);
+  border-left: 3px solid var(--tone, rgba(255, 255, 255, 0.18));
+  border-radius: 12px; padding: 0.65rem 0.9rem; margin-bottom: 0.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.stat.good { --tone: var(--good); }
+.stat.warn { --tone: var(--warn); }
+.stat.bad  { --tone: var(--bad); }
+.stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.04em; }
+.stat-value { font-size: 1.15rem; font-weight: 700; }
+.stat.good .stat-value { color: var(--good); }
+.stat.warn .stat-value { color: var(--warn); }
+.stat.bad  .stat-value { color: var(--bad); }
+
+.rings { display: flex; gap: 10px; margin: 0.4rem 0 0.7rem; }
+.ring-wrap { flex: 1; text-align: center; }
+.ring {
+  width: 92px; height: 92px; border-radius: 50%; margin: 0 auto 6px; display: grid; place-items: center;
+  background: conic-gradient(var(--accent) calc(var(--p) * 1%), rgba(255, 255, 255, 0.08) 0);
+  filter: drop-shadow(0 0 8px rgba(198, 255, 61, 0.25));
+}
+.ring-inner { width: 70px; height: 70px; border-radius: 50%; background: var(--panel); display: grid; place-items: center; }
+.ring-val { font-weight: 800; font-size: 1.05rem; }
+.ring-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* =========================================================
+   COACH BUBBLE
+========================================================= */
+.coach {
+  display: flex; gap: 14px; align-items: flex-start; margin: 0 0 1rem;
+  background: linear-gradient(135deg, rgba(198,255,61,.10), rgba(41,230,255,.06));
+  border: 1px solid rgba(198, 255, 61, 0.28); border-radius: 18px 18px 18px 4px; padding: 0.9rem 1.1rem;
+}
+.coach-avatar {
+  flex: 0 0 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.3rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #0A0D14;
+}
+.coach-name { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; color: var(--accent); }
+.coach-text { font-size: 1.02rem; line-height: 1.45; }
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 1.2rem 0 2rem; }
+.step {
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 1.3rem 1.1rem; position: relative; overflow: hidden; transition: transform .2s, border-color .2s;
+}
+.step:hover { transform: translateY(-4px); border-color: rgba(198, 255, 61, 0.45); }
+.step-num {
+  position: absolute; right: 12px; top: -6px; font-family: 'Barlow Condensed', sans-serif !important;
+  font-size: 4.2rem; font-weight: 800; font-style: italic; color: rgba(198, 255, 61, 0.12);
+}
+.step-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+.step b { display: block; margin-bottom: 4px; }
+.step span { color: var(--muted); font-size: 0.88rem; }
+
+/* =========================================================
+   KPI GRID (history)
+========================================================= */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0.6rem 0 1rem; }
+.kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 0.9rem 1rem; }
+.kpi-val { font-family: 'Barlow Condensed', sans-serif !important; font-size: 2rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.kpi-label { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
 
 /* =========================================================
    BUTTONS
 ========================================================= */
-
 button,
 .stButton button,
-.stDownloadButton button,
-.MuiBox-root button {
-  background-color: #181D2A !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 0 !important;
-  font-family: 'AdobeClean', sans-serif !important;
+.stDownloadButton button {
+  background-color: var(--panel-2) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 12px !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em;
+  transition: all .18s ease;
+}
+button:hover { border-color: rgba(198, 255, 61, 0.5) !important; transform: translateY(-1px); }
+
+.st-key-start_session_button button,
+.st-key-login_submit button {
+  background: linear-gradient(90deg, var(--accent), #8CFF5E) !important;
+  color: #0A0D14 !important; border: none !important; font-weight: 800 !important;
+  text-transform: uppercase; box-shadow: 0 0 22px rgba(198, 255, 61, 0.35);
+}
+.st-key-start_session_button button:hover,
+.st-key-login_submit button:hover { box-shadow: 0 0 34px rgba(198, 255, 61, 0.55); }
+
+.st-key-end_session_button button {
+  background: rgba(255, 92, 108, 0.12) !important; border: 1px solid rgba(255, 92, 108, 0.5) !important;
+  color: var(--bad) !important; text-transform: uppercase;
 }
 
 /* =========================================================
-   INPUTS & TEXT ELEMENTS
+   INPUTS
 ========================================================= */
-
-input,
-textarea,
-p,
-li,
-code,
-[data-testid="stSelectbox"] > div > div,
 [data-baseweb="select"] > div,
-[data-baseweb="popover"] ul,
-[data-baseweb="menu"] {
-  border-radius: 0 !important;
-  font-family: 'AdobeClean', sans-serif !important;
-}
-
-/* =========================================================
-   METRICS
-========================================================= */
-
-[data-testid="stMetric"] {
-  background-color: #181D2A;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 1rem 1.2rem;
-  border-radius: 0;
-}
-
-[data-testid="stMetric"] div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-[data-testid="stMetricValue"] {
-  font-size: 1.5rem !important;
-  font-weight: 400 !important;
-}
-
-[data-testid="stMetricLabel"] {
-  font-size: 15px !important;
-  opacity: 0.6;
-}
-
-[data-testid="stMetric"] div label p {
-  font-size: 16px !important;
-}
-
-/* =========================================================
-   CONTAINERS / CARDS
-========================================================= */
-
-.stContainer,
-.stExpander,
-.stTabs,
-.stColumns,
-.stPopover,
-.stAlertContainer,
-.stStatusContainer,
-.stMetric,
-.stTable,
-.stDataFrame,
-.stForm,
-.stSelectbox,
-[data-baseweb="select"] > div,
-[data-testid="stForm"],
-[data-testid="stMetric"],
 [data-testid="stNumberInputContainer"],
-[data-testid="stDataFrameColumnMenu"],
-[data-testid="stHeadingWithActionElements"],
-[data-testid="stCaptionContainer"] p,
-[data-testid="stAlertContentInfo"] p,
-[data-testid="stSidebarNavLink"],
-[data-testid="stMarkdownContainer"] h3,
-[data-baseweb="popover"],
-[data-baseweb="menu"],
-div[role="menu"],
-div[role="menuitem"] {
-  border-radius: 0 !important;
-  font-family: 'AdobeClean', sans-serif !important;
-}
-
-/* =========================================================
-   DATAFRAME FIX
-========================================================= */
-
-.stDataFrame,
-.stDataFrame div,
-.stDataFrameGlideDataEditor {
-  border-radius: 0 !important;
-  font-family: 'AdobeClean', sans-serif !important;
-}
-
-/* =========================================================
-   INTERACTIVE ELEMENTS
-========================================================= */
-
-.stTextInput,
-.stTextArea,
-.stNumberInput,
-.stSlider,
-.stMultiselect,
-.stRadio,
-.stCheckbox,
-.stToggle,
-.stFileUploader,
-.stColorPicker,
-.stDateInput,
-.stTimeInput,
-.stCameraInput,
 [data-testid="stTextInput"] > div,
-[data-testid="stButton"] button,
-[data-testid="stBaseButton-secondaryFormSubmit"],
-[data-testid="stStatusWidget"] {
-  border-radius: 0 !important;
-  font-family: 'AdobeClean', sans-serif !important;
+input, textarea {
+  border-radius: 12px !important;
+  background-color: var(--panel-2) !important;
+  border-color: var(--line) !important;
+}
+[data-baseweb="popover"], [data-baseweb="menu"] { border-radius: 12px !important; }
+
+/* =========================================================
+   FORM (login)
+========================================================= */
+.stForm, [data-testid="stForm"] {
+  background: var(--panel) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 20px !important;
+  padding: 1.6rem 1.4rem !important;
+  margin-top: 1.5rem !important;
+  box-shadow: 0 0 40px rgba(198, 255, 61, 0.06);
 }
 
 /* =========================================================
-   MARKDOWN
+   CAMERA (webrtc)
 ========================================================= */
-
-[data-testid="stMarkdownContainer"] strong {
-  font-family: 'AdobeClean', sans-serif !important;
+iframe[title*="webrtc"] {
+  border-radius: 18px;
+  border: 1px solid rgba(198, 255, 61, 0.3);
+  box-shadow: 0 0 40px rgba(198, 255, 61, 0.12);
+  background: var(--panel);
 }
 
 /* =========================================================
-   FORM
+   MISC
 ========================================================= */
+[data-testid="stAlertContainer"] { border-radius: 12px !important; }
+[data-testid="stDataFrame"] { border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+hr { border-color: var(--line) !important; }
 
-.stForm {
-  margin-top: 2rem !important;
-  padding: 1.5rem 1rem !important;
-  background-color: #181D2A !important;
-  color: #fff;
+/* =========================================================
+   LOGIN
+========================================================= */
+.login-hero { text-align: center; margin-top: 2rem; }
+.login-logo {
+  width: 84px; height: 84px; margin: 0 auto 1rem; border-radius: 24px; display: grid; place-items: center; font-size: 2.6rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 50px rgba(198, 255, 61, 0.4);
+}
+.login-hero .hero-title { font-size: 4rem; }
+.chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 0.4rem; }
+.chip { padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; background: var(--panel); border: 1px solid var(--line); color: var(--muted); }
+[data-testid="stForm"] { max-width: 460px; margin-left: auto !important; margin-right: auto !important; }
+
+@media (max-width: 760px) {
+  .hero-title { font-size: 2.4rem; }
+  .steps, .kpi-grid { grid-template-columns: 1fr 1fr; }
 }
